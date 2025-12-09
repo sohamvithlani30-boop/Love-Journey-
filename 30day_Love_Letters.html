@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>30-Day Love Letter Journey — For My Pretty Little Baby</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fff6fb;
+    --card:#fff;
+    --accent:#f7a8b8; /* cute pink */
+    --gold:#c7a15a;
+    --text:#3a2b2b;
+    --muted:#8c6f6f;
+    --button:#f3c0d0;
+    --shadow: 0 10px 30px rgba(58,43,43,0.08);
+  }
+  html,body{height:100%;margin:0;font-family: "Playfair Display", serif;background: linear-gradient(180deg, #fff6fb 0%, #fffaf0 100%);}
+  .wrap{
+    min-height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px;
+  }
+  .card{
+    width:980px;
+    max-width:96vw;
+    background:var(--card);
+    border-radius:18px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    display:grid;
+    grid-template-columns: 380px 1fr;
+  }
+  .left{
+    padding:36px;
+    background:
+      radial-gradient(circle at 10% 10%, rgba(247,168,184,0.12), transparent 10%),
+      linear-gradient(180deg, rgba(199,161,90,0.06), transparent);
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    align-items:flex-start;
+    justify-content:center;
+  }
+  .logo{
+    font-family: "Dancing Script", cursive;
+    font-size:34px;
+    color:var(--accent);
+    letter-spacing:1px;
+  }
+  .title{
+    font-size:28px;
+    color:var(--text);
+    font-weight:700;
+    margin-top:6px;
+  }
+  .subtitle{
+    color:var(--muted);
+    font-size:14px;
+    margin-top:6px;
+  }
+  .decor{
+    width:100%;
+    height:1px;
+    background:linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin:12px 0;
+  }
+  .preview{
+    width:100%;
+    height:220px;
+    border-radius:12px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="%23fff6fb"/><stop offset="1" stop-color="%23ffeef6"/></linearGradient></defs><rect width="100%" height="100%" rx="12" fill="url(%23g)"/><g transform="translate(18,18)"><text x="0" y="32" font-family="Dancing Script, cursive" font-size="32" fill="%23f7a8b8">A Journey For My Pretty Little Baby</text></g></svg>') center/cover no-repeat;
+    box-shadow: 0 6px 20px rgba(199,161,90,0.08);
+  }
+
+  .right{
+    padding:28px;
+    position:relative;
+    background:
+      radial-gradient(circle at 100% 0%, rgba(199,161,90,0.02), transparent 10%),
+      linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,250,250,0.95));
+  }
+  .controls{
+    display:flex;gap:12px;align-items:center;margin-bottom:10px;
+  }
+  .day-pill{
+    background:linear-gradient(90deg, #fff, #fff3f7);
+    border:1px solid rgba(199,161,90,0.18);
+    padding:8px 14px;border-radius:999px;font-weight:700;color:var(--gold);
+    box-shadow: 0 4px 10px rgba(247,168,184,0.06);
+  }
+  .status{
+    margin-left:auto;color:var(--muted);font-size:14px;
+  }
+
+  .frame{
+    border:3px dashed rgba(199,161,90,0.12);
+    padding:22px;border-radius:12px;background:linear-gradient(180deg,#fff,#fff9fb);
+    min-height:400px; display:flex;flex-direction:column;
+    gap:12px;
+    position: relative; /* For toast positioning */
+  }
+  .locked {
+    display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;
+    text-align:center;padding:12px;
+  }
+  .locked h2{margin:8px 0;color:var(--text);font-size:20px}
+  .locked p{color:var(--muted);margin:6px 0}
+  .choices{display:flex;flex-direction:column;gap:8px;width:100%;max-width:420px;margin-top:12px}
+  .choice{
+    padding:12px 14px;border-radius:10px;border:1px solid rgba(58,43,43,0.06);
+    background:linear-gradient(90deg,#fff,#fffaf2);cursor:pointer;font-weight:600;color:var(--text);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .choice:hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(247,168,184,0.08)}
+  .reveal{
+    display:none;
+    flex-direction:column;gap:12px;height:100%;
+  }
+  .letter-title{font-family:"Dancing Script",cursive;font-size:28px;color:var(--accent); margin-bottom: 5px;}
+  .letter-body{
+    color:var(--text);
+    line-height:1.7;
+    font-size:16px;
+    max-height:380px; 
+    overflow-y:auto;
+    padding-right: 10px;
+    white-space: pre-line; 
+  }
+  .letter-body::-webkit-scrollbar {width: 6px;}
+  .letter-body::-webkit-scrollbar-track {background: #fff0f5;}
+  .letter-body::-webkit-scrollbar-thumb {background: var(--button); border-radius: 10px;}
+
+  .action-row{display:flex;gap:12px;align-items:center;margin-top:auto; padding-top:15px; border-top: 1px solid rgba(0,0,0,0.05);}
+  .small-muted{color:var(--muted);font-size:13px}
+  .countdown{font-weight:700;color:var(--gold);font-size:16px;background:rgba(199,161,90,0.06);padding:6px 10px;border-radius:8px}
+  
+  /* TOAST MESSAGE (The funny pop up) */
+  #toastBox {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(58,43,43,0.95);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    width: max-content;
+    max-width: 90%;
+    z-index: 100;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+  .toast-visible { opacity: 1 !important; }
+
+  #fireworks{position:absolute;inset:0;pointer-events:none;z-index:50}
+
+  @media (max-width:880px){
+    .card{grid-template-columns:1fr; padding:18px}
+    .left{order:2}
+    .right{order:1}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card" role="application" aria-label="30 day love letter journey app">
+    <canvas id="fireworks"></canvas>
+
+    <div class="left" aria-hidden="true">
+      <div class="logo">For My Pretty Little Baby</div>
+      <div class="title">30-Day Love Letter Journey</div>
+      <div class="subtitle">Each morning a new puzzle → answer to open. Fireworks when you win. Letters at 7:00 AM.</div>
+      <div class="decor"></div>
+      <div class="preview" title="Preview of the daily letter feel"></div>
+      <div style="margin-top:12px;color:var(--muted);font-size:13px">
+        Tip: A new letter unlocks every morning. Solve the puzzle to read my heart.
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="controls">
+        <div class="day-pill" id="currentDayPill">Day 0</div>
+        <div class="status" id="statusText">Loading...</div>
+      </div>
+
+      <div class="frame">
+        <!-- The funny message box -->
+        <div id="toastBox">Nice try, baby!</div>
+
+        <div id="lockedView" class="locked">
+          <h2 id="lockedTitle">A new letter is waiting</h2>
+          <p id="lockedSubtitle">Answer the puzzle to open today’s letter. Good luck, my Pretty Lil Baby ❤️</p>
+
+          <div style="margin-top:8px" class="small-muted">Question</div>
+          <div id="questionText" style="font-weight:700;color:var(--text)"></div>
+
+          <div class="choices" id="choicesArea" role="list"></div>
+
+          <div style="margin-top:16px" class="small-muted">Tip: If the question is tricky, think of our memories & little moments.</div>
+        </div>
+
+        <div id="revealView" class="reveal">
+          <div class="letter-title" id="letterTitle">Letter</div>
+          <div class="letter-body" id="letterBody">Letter contents will appear here.</div>
+
+          <div class="action-row">
+            <div style="width:100%; text-align:center;" class="small-muted">Next unlock in <span class="countdown" id="nextCountdown">--:--:--</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================
+   CONFIG
+   ============================ */
+const START_DATE_OVERRIDE = null; 
+const UNLOCK_HOUR = 7;
+const UNLOCK_MINUTE = 0;
+const TOTAL_DAYS = 30;
+
+/* ============
+   FUNNY WRONG ANSWER MESSAGES
+   ============ */
+const teasingMessages = [
+  "I know you did that on purpose! 😂",
+  "Nice try, baby, but nope! 😉",
+  "Are you testing me? 👽",
+  "Wrong answer, but I still love you.",
+  "Focus, my pretty little baby!",
+  "Nope! But you look cute trying.",
+  "You can't fool me! Try again.",
+  "0730 is watching you pick the wrong one...",
+  "Stop teasing the code! 😂"
+];
+
+/* ============
+   DATA: The 30 Love Letters
+   ============ */
+const letters = [
+  {title:"Day 1 — The Beginning", body:"My Pretty Little Baby,\n\nWelcome to Day 1. I am writing these because sometimes saying 'I love you' out loud isn't enough to hold the weight of what I feel. I want to give you something that lasts, something you can wake up to and feel held by, even when I am not physically there.\n\nThis journey is 30 days long, but my love for you stretches far beyond that. I wanted to start by simply saying thank you. Thank you for existing. Thank you for walking into my life and changing the colors of my world.\n\nI know I haven't always been perfect. I know I have made mistakes. But this—us—is the most important thing to me. Every puzzle you solve to open these letters is a small symbol of us figuring things out, one step at a time. I hope these words make you smile today. I love you endlessly."},
+  {title:"Day 2 — That First Morning", body:"Do you remember the first morning we really spent together? I do. I remember the way the light hit your face and how, for a moment, I forgot to breathe.\n\nThere is a specific kind of peace I feel when I am with you that I have never found anywhere else. It’s not just happiness; it’s safety. It’s the feeling of coming home after a long, exhausting journey.\n\nI replay that morning in my head often. The way you looked, the sound of your voice, the nervous excitement in the air. I want you to know that every morning since then, I wake up grateful. Even on the hard days, even when we are apart, the memory of you is my anchor."},
+  {title:"Day 3 — The Small Things", body:"People always talk about grand gestures, but for me, it is the small things about you that destroy me in the best way possible.\n\nI love the way you check your phone. I love the specific way you sip your coffee. I love how you get quiet when you are thinking deeply. These tiny details make up the masterpiece that is you.\n\nSometimes I catch myself just watching you, trying to memorize every movement, every expression. I want to be the keeper of your small moments. I want to be the one who knows you better than anyone else in the world. Today, I am just loving you for the little things."},
+  {title:"Day 4 — Your Voice", body:"Your voice is my favorite sound. It sounds like a cliché until I realize how true it actually is. If I am having a terrible day, just hearing you say my name fixes 50% of the problem instantly.\n\nThere is a melody in the way you speak, a softness that calms my chaotic mind. I wish I could record your laugh and play it on a loop whenever the world gets too loud.\n\nI promise to listen more. I know I can be stubborn, or rushed, but I promise to listen to the cadence of your voice, to the words you say and the ones you leave unspoken. Your voice matters more to me than you know."},
+  {title:"Day 5 — Rainy Days", body:"I love rainy days, but only because they make me think of cuddling with you. There is something about the grey sky that makes your warmth shine brighter.\n\nI imagine us in the future, on a rainy Sunday, doing absolutely nothing. Maybe a movie, maybe just talking, maybe silence. Just being near you is enough.\n\nI want to shelter you from the storms of life. I know I can't stop the rain from falling, but I promise to hold the umbrella. I promise to stand by you until the sun comes back out. You are my sunshine, always."},
+  {title:"Day 6 — A Promise to Try", body:"I know I have hurt you in the past. Writing this is hard because I have to admit my flaws. But I want to be honest with you.\n\nI promise to try. I promise to try harder to understand you, to be patient, to be the man you deserve. I am not perfect, and I will stumble, but I will never stop trying to be better for you.\n\nLove isn't just a feeling; it's an action. It's the choice to show up, even when it's hard. I am choosing you. Today, tomorrow, and every day after. I am sorry for the times I fell short, and I am determined to stand tall for you now."},
+  {title:"Day 7 — One Week In", body:"Seven days. One whole week of letters. It feels like a small milestone, doesn't it?\n\nThey say the number 7 is lucky, but I don't believe in luck anymore. I believe in destiny. I believe that the universe conspired in a million invisible ways to bring our paths together.\n\nI look at you and I see my future. It scares me sometimes, how much power you have over my heart, but it's a beautiful fear. It's the fear of losing something priceless. You are my treasure, my Pretty Little Baby. Happy one week of letters."},
+  {title:"Day 8 — Comfort", body:"I was thinking today about your comfort food. How your eyes light up when you get that specific treat you love. It’s the purest thing in the world.\n\nI want to be your comfort. I want to be the human equivalent of your favorite food, your favorite blanket, your favorite song. I want to be the place you go to when the world is too sharp.\n\nI hope today treats you gently. If it doesn't, remember that I am here, waiting to wrap you up and make it better. Go treat yourself to something tasty today—you deserve it."},
+  {title:"Day 9 — 0730", body:"0730. This number isn't just digits to me. It is etched into my skin and my soul. It represents a turning point, a connection that goes beyond logic.\n\nEvery time I see it, I am reminded of us. It is a permanent mark of a permanent feeling. People ask about tattoos and meanings, but some meanings are too deep to explain to strangers.\n\nIt belongs to you. It belongs to us. It is my silent vow that I carry with me everywhere I go. You are with me, on my skin and in my blood, always."},
+  {title:"Day 10 — The Smile", body:"We are one-third of the way through. Today, I just want to talk about your smile.\n\nIt is, without exaggeration, the most beautiful thing I have ever seen. It reaches your eyes and makes them sparkle in a way that photos can never quite capture. When you smile at me, I feel like I can do anything.\n\nI make it my mission to put that smile on your face. I know I fail sometimes, but I will keep trying. Your happiness is my priority. Keep smiling, my love. It lights up my dark world."},
+  {title:"Day 11 — Learning", body:"I am learning you. Like a complex book, like a beautiful language. I am learning what makes you tick, what makes you cry, what makes you dream.\n\nI am sorry for the times I misread you. I am sorry for the times I didn't pay close enough attention. I am a student of your heart, and I am studying every day.\n\nPlease be patient with me as I learn. I promise I am doing my homework. I want to know you so well that I can anticipate your needs before you even speak them."},
+  {title:"Day 12 — Music and Memory", body:"Music has a way of trapping memories in amber. There are songs I hear now that immediately transport me back to you.\n\nWhether it's that song we listened to in the car, or the one I sent you when I missed you—they are the soundtrack of our movie. And it is my favorite movie.\n\nI hope today your life has a beautiful melody. I hope you hear a song that makes you want to dance. Imagine me dancing (badly) next to you, just to make you laugh."},
+  {title:"Day 13 — The Playlist", body:"If I could make a playlist of my thoughts about you, it would be chaotic. It would have slow ballads of longing, fast tracks of excitement, and symphonies of gratitude.\n\nYou are every genre of music to me. You are the excitement of pop, the depth of classical, the soul of jazz. You are the only song I want to keep on repeat.\n\nMaybe we should listen to something together today, even if we are apart. Press play at the same time and feel the connection."},
+  {title:"Day 14 — Two Weeks", body:"Two weeks. We are getting deeper now.\n\nI realized today that I don't just love you; I like you. I like who you are as a person. I like your kindness, your wit, your strength. Even if we weren't in love, I would want to know you.\n\nYou are a genuinely good human being, and that is rare. I am so proud of you. I am so proud to call you mine. Keep shining, baby."},
+  {title:"Day 15 — Halfway There", body:"We are halfway through this journey. It feels fast, doesn't it? Like our time together.\n\nTime is a funny thing. When I am with you, hours feel like seconds. When I am away from you, minutes feel like days. It’s relativity, explained by love.\n\nMy promise to you at this halfway mark is to stop rushing. To savor the time. To appreciate the seconds, the minutes, the hours. I want to slow down and live in the moment with you."},
+  {title:"Day 16 — Laughter", body:"I miss your laugh. The real one. The one that happens when something is actually funny, not just polite.\n\nRemember that time we laughed until our stomachs hurt? I hold onto that memory like a lifeline. I want a lifetime of those moments.\n\nLife is serious and hard, but with you, it’s also fun. You bring a lightness to my heavy soul. Thank you for being my joy."},
+  {title:"Day 17 — Favorite Things", body:"I want to memorize your favorite things so I never have to ask. I want to know your order at every restaurant. I want to know which side of the bed you prefer.\n\nIntimacy isn't just physical; it's knowledge. It's knowing that you hate pickles or love extra spicy food. It's knowing you.\n\nI am building a library of You in my mind. And it is my most possessive collection."},
+  {title:"Day 18 — The Sunset", body:"One day, we will watch the sunset from a place where we don't have to say goodbye afterwards.\n\nThat is my dream. To watch the sun go down and know that I get to wake up next to you when it comes back up. No driving home, no 'see you later.' Just us.\n\nUntil then, whenever you see a beautiful sunset, look at it and know I am looking at the same sky, wishing I was holding your hand."},
+  {title:"Day 19 — Vulnerability", body:"I am trying to be brave for you. To open up my chest and show you the messy parts inside.\n\nIt is scary to give someone the power to destroy you, but I trust you. I trust you with my heart, my secrets, my fears. You are the only person I feel safe enough to be weak around.\n\nThank you for holding my heart so gently. I know it’s fragile, but in your hands, it feels safe."},
+  {title:"Day 20 — Stitching Stories", body:"These 20 letters are like threads in a tapestry. We are weaving a story together, day by day.\n\nSome threads are bright and golden (our happy days), some are dark (our fights), but together they make a picture. And the picture is beautiful because it is real.\n\nI wouldn't trade our story for a perfect fairy tale. I want the real, messy, complicated, passionate story of Us."},
+  {title:"Day 21 — The Secret Name", body:"'My Pretty Little Baby.' When I call you that, it’s not just a nickname.\n\nIt’s an endearment that means I want to protect you. I want to spoil you. I want to take care of you. You are strong and independent, I know, but with me, you can be soft.\n\nYou can let your guard down. You can be my baby. I’ve got you. I’ve always got you."},
+  {title:"Day 22 — A Drawing in Words", body:"If I could draw, I would sketch your eyes. But I can't, so I paint with words.\n\nYour eyes hold a universe. When you look at me, I feel seen. Really seen. You see past the masks I wear for the world. You see the real me, and somehow, you still love me.\n\nThat is a miracle I will never understand, but I will always accept."},
+  {title:"Day 23 — Patience", body:"I am learning patience. I know I have been rushed in the past. I know I have pushed when I should have pulled back.\n\nI am sorry. I am learning that love is a marathon, not a sprint. I am willing to wait. I am willing to go at your pace.\n\nTake your time, my love. I am not going anywhere. I am planted here, like a tree, waiting for you."},
+  {title:"Day 24 — The Tuck", body:"I notice how you tuck your hair behind your ear sometimes. It’s such a simple movement, but it makes my heart flip.\n\nIt’s unconscious, natural, and utterly beautiful. It’s these candid moments that I fall in love with over and over again.\n\nYou are a work of art in motion. Never change the way you move."},
+  {title:"Day 25 — Dreams", body:"I dream about you. Not just when I am asleep, but when I am awake.\n\nI daydream about grocery shopping with you. About folding laundry with you. About fighting over the remote control. The mundane, boring parts of life—I want them all with you.\n\nA boring life with you sounds like paradise to me."},
+  {title:"Day 26 — The Song Remains", body:"There is a song playing in my head right now, and it reminds me of the first time I realized I was in deep.\n\nIt’s a love song, obviously. All love songs make sense now. I used to think they were cheesy, but now I hear the lyrics and think, 'Oh, that's exactly how it feels.'\n\nYou turned me into a romantic cliché, and I love it."},
+  {title:"Day 27 — Apology and Growth", body:"I want to apologize again for the times I didn't listen. For the times I made you feel small or unheard.\n\nI am growing. It hurts to grow, but I am doing it. I am shedding my old skin to become the man who can hold your heart properly.\n\nThank you for believing in my potential, even when I didn't show it."},
+  {title:"Day 28 — Penultimate Thoughts", body:"We are getting close to the end of this 30-day journey. It makes me a little sad, but also excited.\n\nExcited because this isn't really the end. It’s just the prologue. The real story is what we do after this. The real story is how we build our life.\n\nI am ready to build. Brick by brick, kiss by kiss."},
+  {title:"Day 29 — Almost There", body:"Tomorrow is the last letter. But today, I want to give you a warm hug in text form.\n\nImagine my arms around you. Imagine me pulling you close and resting my chin on your head. Imagine the world falling away until it’s just us.\n\nFeel that? That’s how much I love you. Can't wait for the grand finale tomorrow."},
+  {title:"Day 30 — The Vow", body:"My Dearest, My Pretty Little Baby,\n\nWe have arrived at Day 30. If you are reading this, thank you for sticking with me. Thank you for opening every puzzle, for reading every word, for letting me love you in this way.\n\nThis isn't just a letter; it is a vow. A vow written not in stone, but in digital ink, which in some ways is even more permanent because it will live here forever.\n\nI love you. I don't say that lightly. I love the way you are. I love the dark parts of you and the light parts. I love your past, your present, and the future I see in your eyes.\n\nI promise to be your partner. I promise to be your biggest fan. I promise to apologize when I am wrong (and I know I will be). I promise to listen. I promise to work on myself so that I can be worthy of you.\n\nWe have had our ups and downs. We have scarred each other and healed each other. But through it all, the one constant has been this pull—this magnetic, undeniable force that keeps bringing me back to you.\n\nI want to wake up next to you for the rest of my life. I want to handle your bad days. I want to celebrate your wins. I want to be the one holding your hand when we are old and grey.\n\nTake this letter as my heart, stripped bare and placed in your hands. Be gentle with it, keep it safe, because it belongs to you entirely. No matter what happens, no matter where life takes us, you will always be the one. The only one. \n\nI love you, now and forever.\n\nYours,\n(Me)"}
+];
+
+const puzzles = [
+  {q:"Which number is inked on my skin and etched in my heart?", choices:["0730","0307","0073","3700"], correctIndex:0},
+  {q:"Where is the place I first realized I wanted you?", choices:["The Café","The Park","In my dreams","At school"], correctIndex:0},
+  {q:"What food makes your bad days better?", choices:["Maggi","Pizza","Ice cream","Paratha"], correctIndex:2},
+  {q:"When I am nervous or wrong, what do I say too often?", choices:["I know","Sorry","Maybe","Quiet"], correctIndex:1},
+  {q:"What is my absolute favorite sound?", choices:["Rain","Music","Your Voice","Silence"], correctIndex:2},
+  {q:"Which time of day makes me miss you the most?", choices:["Morning","Noon","Sunset","Midnight"], correctIndex:0},
+  {q:"If I could take you anywhere, where would we go first?", choices:["A crowded club","A quiet beach","A movie","A mall"], correctIndex:1},
+  {q:"What is the nickname that is only for you?", choices:["My Pretty Lil Baby","Honey","Dear","Princess"], correctIndex:0},
+  {q:"What do I promise to do more of?", choices:["Talk","Sleep","Listen","Work"], correctIndex:2},
+  {q:"What color reminds me of your sweetness?", choices:["Pastel pink","Neon green","Black","Grey"], correctIndex:0},
+  {q:"What is the little habit of yours I adore?", choices:["Tucking hair back","Biting nails","Tapping foot","Frowning"], correctIndex:0},
+  {q:"Which song genre describes my feelings?", choices:["Heavy Metal","Love Songs","Rap","Techno"], correctIndex:1},
+  {q:"What do I wish to give you most in this world?", choices:["Expensive gifts","Peace & Love","Drama","Distance"], correctIndex:1},
+  {q:"What do I see when I look at you?", choices:["My Future","A Friend","A Stranger","Nothing"], correctIndex:0},
+  {q:"How would I describe our story?", choices:["Perfect","Messy but Beautiful","Boring","Short"], correctIndex:1},
+  {q:"What is my goal for us?", choices:["To give up","To grow old together","To be just friends","To forget"], correctIndex:1},
+  {q:"What makes me brave?", choices:["Your belief in me","Money","Coffee","Anger"], correctIndex:0},
+  {q:"What do I want to be for you?", choices:["Your boss","Your safety","Your burden","Your past"], correctIndex:1},
+  {q:"If we are fighting, what do I really want?", choices:["To win","To fix it","To leave","To yell"], correctIndex:1},
+  {q:"What is the theme of Day 9?", choices:["The Tattoo","The Food","The Weather","The Car"], correctIndex:0},
+  {q:"What makes your eyes sparkle?", choices:["Tears","Your Smile","Dust","Anger"], correctIndex:1},
+  {q:"What am I learning to practice?", choices:["Patience","Running","Cooking","Singing"], correctIndex:0},
+  {q:"Where do I want to watch the sun go down?", choices:["With you","Alone","On TV","Online"], correctIndex:0},
+  {q:"How often do you cross my mind?", choices:["Every second","Rarely","Once a day","Never"], correctIndex:0},
+  {q:"What kind of life do I dream of with you?", choices:["Flashy","Quiet & Happy","Busy","Apart"], correctIndex:1},
+  {q:"What is the thread that connects these letters?", choices:["Love","Paper","Ink","WiFi"], correctIndex:0},
+  {q:"What do I regret?", choices:["Meeting you","Not listening enough","Loving you","Nothing"], correctIndex:1},
+  {q:"How many days is this journey?", choices:["30 Days","10 Days","100 Days","1 Day"], correctIndex:0},
+  {q:"What comes after Day 30?", choices:["The End","Our Real Beginning","Goodbye","Silence"], correctIndex:1},
+  {q:"What is the final promise?", choices:["I am yours forever","I might stay","I'll think about it","See you later"], correctIndex:0}
+];
+
+// Sanity check - ensure lengths
+if (letters.length !== TOTAL_DAYS || puzzles.length !== TOTAL_DAYS) {
+  console.warn('letters/puzzles length mismatch with TOTAL_DAYS. Edit arrays to match TOTAL_DAYS.');
+}
+
+/* ============================
+   APP STATE & UTIL
+   ============================ */
+
+/*
+   IMPORTANT: I changed the key to 'love_journey_v5_final'.
+   This resets the save data so you see the questions again.
+*/
+const stateKey = 'love_journey_v5_final';
+let progress = JSON.parse(localStorage.getItem(stateKey) || '{}'); 
+if (!progress.answeredDays) progress.answeredDays = {};
+
+/* 
+   BUG FIX: Persistent Start Date
+   If we rely on "new Date()" every time, "Tomorrow" is always a day away.
+   We must store the initial start date in localStorage so the timeline is fixed.
+*/
+if (!progress.startDate) {
+  // If we have an override in code, use it.
+  if (START_DATE_OVERRIDE) {
+    progress.startDate = START_DATE_OVERRIDE; // 'YYYY-MM-DD' string
+  } else {
+    // START TODAY. This ensures Day 1 is unlocked immediately for you to see.
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), UNLOCK_HOUR, UNLOCK_MINUTE, 0, 0);
+    // Store as ISO string
+    progress.startDate = today.toISOString();
+  }
+  localStorage.setItem(stateKey, JSON.stringify(progress));
+}
+
+function saveProgress(){ localStorage.setItem(stateKey, JSON.stringify(progress)); }
+
+function formatTime(n){ return (n<10?'0':'') + n; }
+
+// Parse the stored start date
+function getStartDate(){
+  // progress.startDate is a string (ISO or YYYY-MM-DD)
+  const s = progress.startDate;
+  // if it's simple YYYY-MM-DD
+  if (s.length === 10 && s.indexOf('T') === -1) {
+    const parts = s.split('-');
+    const y = +parts[0], m = +parts[1]-1, d = +parts[2];
+    return new Date(y,m,d,UNLOCK_HOUR,UNLOCK_MINUTE,0,0);
+  }
+  // else it is ISO string
+  return new Date(s);
+}
+
+const START_DATE = getStartDate();
+
+/* Return the unlock DateTime for dayIndex (0-based) */
+function unlockDateForDay(dayIndex){
+  const d = new Date(START_DATE);
+  d.setDate(d.getDate() + dayIndex);
+  // Ensure hour/min are correct (in case of DST shifts, though simple math is usually enough)
+  d.setHours(UNLOCK_HOUR, UNLOCK_MINUTE, 0, 0);
+  return d;
+}
+
+/* calculate current unlocked day index */
+function currentAvailableDayIndex(){
+  const now = new Date();
+  for (let i = TOTAL_DAYS-1; i>=0; i--){
+    if (now >= unlockDateForDay(i)) return i;
+  }
+  return -1; // none yet
+}
+
+/* ============================
+   UI BINDINGS & Logic
+   ============================ */
+const currentDayPill = document.getElementById('currentDayPill');
+const statusText = document.getElementById('statusText');
+const lockedView = document.getElementById('lockedView');
+const revealView = document.getElementById('revealView');
+const questionText = document.getElementById('questionText');
+const choicesArea = document.getElementById('choicesArea');
+const lockedTitle = document.getElementById('lockedTitle');
+const lockedSubtitle = document.getElementById('lockedSubtitle');
+const letterTitle = document.getElementById('letterTitle');
+const letterBody = document.getElementById('letterBody');
+const nextCountdown = document.getElementById('nextCountdown');
+const toastBox = document.getElementById('toastBox');
+
+let selectedDayIndex = 0;
+
+function render(){
+  const now = new Date();
+  const availableIndex = currentAvailableDayIndex();
+  
+  // Force Day 0 selection if available
+  if (availableIndex === -1) {
+    selectedDayIndex = 0;
+  } else {
+    selectedDayIndex = Math.min(availableIndex, TOTAL_DAYS-1);
+  }
+
+  currentDayPill.textContent = 'Day ' + (selectedDayIndex+1);
+  const unlockDT = unlockDateForDay(selectedDayIndex);
+
+  const isTimeUnlocked = now >= unlockDT;
+  const isAnswered = !!progress.answeredDays[selectedDayIndex];
+
+  if (!isTimeUnlocked) {
+    // Future date
+    lockedTitle.textContent = 'Locked until ' + unlockDT.toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
+    lockedSubtitle.textContent = 'Patience, my love. A new letter unlocks at 7:00 AM.';
+    statusText.textContent = 'Wait for it...';
+    showLockedView(selectedDayIndex, true); 
+  } else {
+    // Time is passed. Is it answered?
+    if (isAnswered) {
+      showRevealView(selectedDayIndex);
+      statusText.textContent = 'Opened — ' + (selectedDayIndex+1) + '/' + TOTAL_DAYS;
+    } else {
+      // Unlocked but not answered -> Show Puzzle
+      lockedTitle.textContent = 'A new letter is waiting';
+      lockedSubtitle.textContent = 'Answer the puzzle to open today’s letter. Good luck, my Pretty Lil Baby ❤️';
+      statusText.textContent = 'Available — answer to open';
+      showLockedView(selectedDayIndex, false); 
+    }
+  }
+
+  updateCountdown();
+}
+
+function showLockedView(dayIndex, isTimeLocked){
+  revealView.style.display = 'none';
+  lockedView.style.display = 'flex';
+  
+  if (isTimeLocked) {
+    questionText.style.display = 'none';
+    choicesArea.style.display = 'none';
+    lockedView.querySelectorAll('.small-muted')[0].style.display = 'none';
+    lockedView.querySelectorAll('.small-muted')[1].style.display = 'none';
+  } else {
+    questionText.style.display = 'block';
+    choicesArea.style.display = 'flex';
+    lockedView.querySelectorAll('.small-muted')[0].style.display = 'block';
+    lockedView.querySelectorAll('.small-muted')[1].style.display = 'block';
+    
+    const p = puzzles[dayIndex];
+    questionText.textContent = p.q;
+    // render choices
+    choicesArea.innerHTML = '';
+    p.choices.forEach((c, idx)=>{
+      const btn = document.createElement('button');
+      btn.className = 'choice';
+      btn.setAttribute('role','listitem');
+      btn.textContent = c;
+      btn.onclick = ()=> attemptAnswer(dayIndex, idx, btn);
+      choicesArea.appendChild(btn);
+    });
+  }
+}
+
+function showRevealView(dayIndex){
+  lockedView.style.display = 'none';
+  revealView.style.display = 'flex';
+  const L = letters[dayIndex];
+  letterTitle.textContent = L.title;
+  letterBody.textContent = L.body;
+  updateCountdown();
+}
+
+function attemptAnswer(dayIndex, choiceIndex, btnEl){
+  const p = puzzles[dayIndex];
+  if (choiceIndex === p.correctIndex){
+    // correct!
+    progress.answeredDays[dayIndex] = true;
+    saveProgress();
+    launchFireworks(); 
+    setTimeout(()=>{
+      showRevealView(dayIndex);
+    }, 800);
+  } else {
+    // wrong - shake
+    btnEl.animate([{transform:'translateX(0)'},{transform:'translateX(-8px)'},{transform:'translateX(8px)'},{transform:'translateX(0)'}], {duration:360});
+    btnEl.style.background = 'linear-gradient(90deg,#fff,#ffdfe9)';
+    setTimeout(()=> btnEl.style.background = '', 600);
+    
+    // Show funny toast
+    const msg = teasingMessages[Math.floor(Math.random() * teasingMessages.length)];
+    showToast(msg);
+  }
+}
+
+function showToast(msg){
+  toastBox.textContent = msg;
+  toastBox.classList.add('toast-visible');
+  setTimeout(()=>{
+    toastBox.classList.remove('toast-visible');
+  }, 2500);
+}
+
+function updateCountdown(){
+  const now = new Date();
+  const available = currentAvailableDayIndex();
+  let nextIndex = available + 1;
+  
+  // If we are currently waiting for Day 0 to unlock
+  if (available === -1) nextIndex = 0;
+
+  if (nextIndex >= TOTAL_DAYS) {
+    nextCountdown.textContent = 'Completed';
+    return;
+  }
+  
+  const nextUnlock = unlockDateForDay(nextIndex);
+  const diffMs = Math.max(0, nextUnlock - now);
+  
+  const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  const hrs = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const mins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+  const secs = Math.floor((diffMs % (1000 * 60)) / 1000);
+  
+  if (days > 0) {
+      nextCountdown.textContent = days + "d " + formatTime(hrs) + ':' + formatTime(mins);
+  } else {
+      nextCountdown.textContent = formatTime(hrs) + ':' + formatTime(mins) + ':' + formatTime(secs);
+  }
+}
+
+setInterval(()=>{
+  render();
+}, 1000);
+
+/* ============================
+   Fireworks
+   ============================ */
+const canvas = document.getElementById('fireworks');
+const ctx = canvas.getContext('2d');
+let W=0,H=0, particles=[];
+
+function resizeCanvas(){
+  W = canvas.width = canvas.clientWidth;
+  H = canvas.height = canvas.clientHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+function rand(min,max){ return Math.random()*(max-min)+min; }
+
+function launchFireworks(){
+  for (let burst=0; burst<8; burst++){
+    const cx = rand(W*0.2, W*0.8);
+    const cy = rand(H*0.2, H*0.6);
+    createBurst(cx,cy);
+  }
+  if (!animRunning) startAnim();
+}
+
+function createBurst(cx,cy){
+  const colors = ['#FF6B6B','#FFD166','#6BCB77','#4D96FF','#C77DF3','#F7A8B8'];
+  const count = 35;
+  for (let i=0;i<count;i++){
+    const angle = Math.PI*2*(i/count) + rand(-0.2,0.2);
+    const speed = rand(3,9);
+    particles.push({
+      x:cx, y:cy,
+      vx: Math.cos(angle)*speed,
+      vy: Math.sin(angle)*speed,
+      life: rand(80,140),
+      age:0,
+      size: rand(2,5),
+      color: colors[Math.floor(rand(0,colors.length))]
+    });
+  }
+}
+
+let animRunning = false;
+function startAnim(){
+  animRunning = true;
+  requestAnimationFrame(step);
+}
+
+function step(){
+  ctx.clearRect(0,0,W,H);
+  for (let i=particles.length-1;i>=0;i--){
+    const p = particles[i];
+    p.age++;
+    p.vy += 0.08; 
+    p.x += p.vx;
+    p.y += p.vy;
+    const t = p.age / p.life;
+    ctx.globalAlpha = Math.max(0, 1 - t);
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    if (p.age > p.life) particles.splice(i,1);
+  }
+  if (particles.length>0) requestAnimationFrame(step);
+  else animRunning = false;
+}
+
+// Initial Render
+render();
+
+</script>
+</body>
+</html>

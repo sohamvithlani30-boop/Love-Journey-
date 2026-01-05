@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I Am Sorry</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: linear-gradient(to bottom, #cfd9df 0%, #e2ebf0 100%);
+        --text-color: #546e7a;
+        --accent: #ff6b6b;
+    }
+
+    body, html {
+        margin: 0; padding: 0; width: 100%; height: 100%;
+        font-family: 'Quicksand', sans-serif;
+        background: var(--bg-color);
+        overflow: hidden;
+        display: flex; align-items: center; justify-content: center;
+    }
+
+    /* RAIN ANIMATION */
+    .rain {
+        position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+        pointer-events: none; z-index: 0;
+    }
+    .drop {
+        position: absolute; bottom: 100%; width: 2px; height: 15px;
+        background: rgba(84, 110, 122, 0.4);
+        animation: fall linear infinite;
+    }
+    @keyframes fall { to { transform: translateY(110vh); } }
+
+    /* CARD CONTAINER */
+    .container {
+        position: relative; z-index: 10;
+        width: 85%; max-width: 500px;
+        height: 600px; /* Fixed height for consistency */
+    }
+
+    /* PAGES */
+    .page {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(255,255,255,0.9);
+        border-radius: 30px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        display: flex; flex-direction: column; 
+        align-items: center; justify-content: center;
+        padding: 30px; box-sizing: border-box;
+        text-align: center;
+        transition: transform 0.6s ease, opacity 0.6s ease;
+        opacity: 0; transform: scale(0.9); pointer-events: none;
+    }
+    .page.active { opacity: 1; transform: scale(1); pointer-events: all; }
+
+    h1 {
+        font-family: 'Dancing Script', cursive; font-size: 2.5rem;
+        color: var(--accent); margin-bottom: 20px;
+    }
+
+    p { font-size: 1.1rem; line-height: 1.8; color: var(--text-color); margin-bottom: 30px; }
+
+    /* BUTTONS */
+    .btn {
+        padding: 12px 35px; border-radius: 50px; border: none;
+        background: var(--accent); color: white;
+        font-family: 'Quicksand', sans-serif; font-weight: bold; font-size: 1rem;
+        cursor: pointer; box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        transition: transform 0.2s;
+    }
+    .btn:active { transform: scale(0.95); }
+
+    /* CSS BEAR (Cute & Sad) */
+    .bear {
+        width: 120px; height: 120px; background: #d7ccc8;
+        border-radius: 50% 50% 40% 40%; position: relative;
+        margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .ear {
+        width: 35px; height: 35px; background: #bcaaa4;
+        border-radius: 50%; position: absolute; top: -10px;
+    }
+    .ear.left { left: 10px; } .ear.right { right: 10px; }
+    .eye {
+        width: 12px; height: 12px; background: #3e2723;
+        border-radius: 50%; position: absolute; top: 40px;
+    }
+    .eye.left { left: 35px; } .eye.right { right: 35px; }
+    .nose {
+        width: 20px; height: 15px; background: #3e2723;
+        border-radius: 50%; position: absolute; top: 65px; left: 50px;
+    }
+    /* Sad Tear Animation */
+    .tear {
+        width: 6px; height: 6px; background: #81d4fa; border-radius: 50%;
+        position: absolute; top: 55px; left: 35px;
+        animation: cry 2s infinite; opacity: 0;
+    }
+    @keyframes cry {
+        0% { opacity: 0; transform: translateY(0); }
+        50% { opacity: 1; }
+        100% { opacity: 0; transform: translateY(30px); }
+    }
+
+</style>
+</head>
+<body>
+
+    <!-- RAIN BACKGROUND -->
+    <div class="rain" id="rain"></div>
+
+    <div class="container">
+
+        <!-- PAGE 1: THE REALIZATION -->
+        <div class="page active" id="p1">
+            <h1>I am sorry...</h1>
+            <p>
+                I know I messed up today. <br>
+                You asked for space, and instead of listening, I panicked and ran to you.
+                <br><br>
+                I didn't mean to annoy you. I was just scared of losing you. But I realize now that by holding on too tight, I am only pushing you further away.
+            </p>
+            <button class="btn" onclick="nextPage(1)">Please Read Next</button>
+        </div>
+
+        <!-- PAGE 2: THE APOLOGY -->
+        <div class="page" id="p2">
+            <h1>My Mistake</h1>
+            <p>
+                I saw that you were angry, and I still tried to force a conversation. That was selfish of me.
+                <br><br>
+                You deserve to have your boundaries respected. You deserve to have your time with your friends without me standing there looking sad.
+                <br><br>
+                I am sorry for ruining your mood and your time.
+            </p>
+            <button class="btn" onclick="nextPage(2)">One Last Thing</button>
+        </div>
+
+        <!-- PAGE 3: THE PROMISE -->
+        <div class="page" id="p3">
+            <h1>I Will Listen Now</h1>
+            <p>
+                You said it is tiring to explain things. I get it now.
+                <br><br>
+                I am going to stop asking "Why". <br>
+                I am going to stop asking for time.
+                <br><br>
+                I am stepping back. Not because I don't care, but because I care enough to give you what you asked for: <strong>Space.</strong>
+            </p>
+            <button class="btn" onclick="nextPage(3)">My Final Sorry</button>
+        </div>
+
+        <!-- PAGE 4: THE CUTE GOODBYE -->
+        <div class="page" id="p4">
+            <!-- CSS BEAR -->
+            <div class="bear">
+                <div class="ear left"></div>
+                <div class="ear right"></div>
+                <div class="eye left"></div>
+                <div class="eye right"></div>
+                <div class="nose"></div>
+                <div class="tear"></div> <!-- Crying Tear -->
+            </div>
+
+            <h1>Forgive Me?</h1>
+            <p>
+                I am going to be quiet now. <br>
+                I hope that when the anger fades, you can remember that my heart only ever wanted to make you happy.
+                <br><br>
+                I am genuinely, deeply sorry, Vanshi.
+            </p>
+            <p style="font-size: 0.9rem; color: #999;">(I will wait for you to text me first.)</p>
+        </div>
+
+    </div>
+
+<script>
+    /* --- PAGE NAVIGATION --- */
+    function nextPage(num) {
+        document.getElementById('p' + num).classList.remove('active');
+        document.getElementById('p' + (num + 1)).classList.add('active');
+    }
+
+    /* --- RAIN EFFECT --- */
+    const rainContainer = document.getElementById('rain');
+    for(let i=0; i<50; i++){
+        let drop = document.createElement('div');
+        drop.classList.add('drop');
+        drop.style.left = Math.random() * 100 + '%';
+        drop.style.animationDuration = Math.random() * 1 + 0.5 + 's';
+        drop.style.animationDelay = Math.random() * 2 + 's';
+        rainContainer.appendChild(drop);
+    }
+</script>
+
+</body>
+</html>

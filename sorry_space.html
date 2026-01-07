@@ -3,194 +3,212 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>I Am Sorry</title>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+<title>For My Vanshi</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
 <style>
+    /* SOFT HEALING THEME */
     :root {
-        --bg-color: linear-gradient(to bottom, #cfd9df 0%, #e2ebf0 100%);
-        --text-color: #546e7a;
-        --accent: #ff6b6b;
+        --bg-color: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+        --accent: #ff8a80; /* Soft Red */
+        --text: #5d4037;
     }
 
     body, html {
         margin: 0; padding: 0; width: 100%; height: 100%;
-        font-family: 'Quicksand', sans-serif;
-        background: var(--bg-color);
+        font-family: 'Nunito', sans-serif;
+        background: radial-gradient(circle at center, #fff0f0, #ffebee);
         overflow: hidden;
         display: flex; align-items: center; justify-content: center;
     }
 
-    /* RAIN ANIMATION */
-    .rain {
-        position: absolute; left: 0; top: 0; width: 100%; height: 100%;
-        pointer-events: none; z-index: 0;
+    /* BACKGROUND PARTICLES */
+    .particle {
+        position: absolute; border-radius: 50%;
+        background: rgba(255, 138, 128, 0.3);
+        animation: floatUp linear infinite;
+        bottom: -50px; z-index: 0;
     }
-    .drop {
-        position: absolute; bottom: 100%; width: 2px; height: 15px;
-        background: rgba(84, 110, 122, 0.4);
-        animation: fall linear infinite;
+    @keyframes floatUp {
+        0% { transform: translateY(0) scale(0.5); opacity: 0; }
+        50% { opacity: 0.8; }
+        100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
     }
-    @keyframes fall { to { transform: translateY(110vh); } }
 
     /* CARD CONTAINER */
     .container {
         position: relative; z-index: 10;
-        width: 85%; max-width: 500px;
-        height: 600px; /* Fixed height for consistency */
+        width: 85%; max-width: 450px; height: 500px;
     }
 
     /* PAGES */
     .page {
         position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(255,255,255,0.9);
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
         border-radius: 30px;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        box-shadow: 0 20px 60px rgba(255, 138, 128, 0.15);
         display: flex; flex-direction: column; 
         align-items: center; justify-content: center;
-        padding: 30px; box-sizing: border-box;
+        padding: 40px; box-sizing: border-box;
         text-align: center;
-        transition: transform 0.6s ease, opacity 0.6s ease;
-        opacity: 0; transform: scale(0.9); pointer-events: none;
+        transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.5s;
+        opacity: 0; transform: translateY(50px) scale(0.95); pointer-events: none;
     }
-    .page.active { opacity: 1; transform: scale(1); pointer-events: all; }
+    .page.active { opacity: 1; transform: translateY(0) scale(1); pointer-events: all; }
 
+    /* TEXT STYLES */
     h1 {
-        font-family: 'Dancing Script', cursive; font-size: 2.5rem;
+        font-family: 'Dancing Script', cursive; font-size: 2.8rem;
         color: var(--accent); margin-bottom: 20px;
+        line-height: 1.2;
     }
 
-    p { font-size: 1.1rem; line-height: 1.8; color: var(--text-color); margin-bottom: 30px; }
+    p { font-size: 1.1rem; line-height: 1.7; color: var(--text); margin-bottom: 30px; }
+
+    .highlight { color: #d32f2f; font-weight: bold; }
 
     /* BUTTONS */
     .btn {
-        padding: 12px 35px; border-radius: 50px; border: none;
+        padding: 15px 40px; border-radius: 50px; border: none;
         background: var(--accent); color: white;
-        font-family: 'Quicksand', sans-serif; font-weight: bold; font-size: 1rem;
-        cursor: pointer; box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
-        transition: transform 0.2s;
+        font-family: 'Nunito', sans-serif; font-weight: bold; font-size: 1.1rem;
+        cursor: pointer; box-shadow: 0 10px 20px rgba(255, 138, 128, 0.3);
+        transition: transform 0.2s, box-shadow 0.2s;
     }
-    .btn:active { transform: scale(0.95); }
+    .btn:active { transform: scale(0.95); box-shadow: 0 5px 10px rgba(255, 138, 128, 0.2); }
 
-    /* CSS BEAR (Cute & Sad) */
-    .bear {
-        width: 120px; height: 120px; background: #d7ccc8;
-        border-radius: 50% 50% 40% 40%; position: relative;
-        margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    /* FINAL HEART ANIMATION */
+    .heart-shape {
+        width: 100px; height: 90px;
+        background: #ff5252; position: relative;
+        transform: rotate(-45deg); margin-bottom: 30px;
+        animation: heartbeat 1.5s infinite;
+        box-shadow: -10px 10px 40px rgba(255, 82, 82, 0.4);
     }
-    .ear {
-        width: 35px; height: 35px; background: #bcaaa4;
-        border-radius: 50%; position: absolute; top: -10px;
+    .heart-shape:before, .heart-shape:after {
+        content: ""; width: 100px; height: 100px;
+        background: #ff5252; border-radius: 50%;
+        position: absolute;
     }
-    .ear.left { left: 10px; } .ear.right { right: 10px; }
-    .eye {
-        width: 12px; height: 12px; background: #3e2723;
-        border-radius: 50%; position: absolute; top: 40px;
+    .heart-shape:before { top: -50px; left: 0; }
+    .heart-shape:after { top: 0; left: 50px; }
+
+    @keyframes heartbeat {
+        0% { transform: scale(1) rotate(-45deg); }
+        50% { transform: scale(1.1) rotate(-45deg); }
+        100% { transform: scale(1) rotate(-45deg); }
     }
-    .eye.left { left: 35px; } .eye.right { right: 35px; }
-    .nose {
-        width: 20px; height: 15px; background: #3e2723;
-        border-radius: 50%; position: absolute; top: 65px; left: 50px;
+
+    /* CONFETTI */
+    .confetti {
+        position: absolute; width: 10px; height: 10px; background: #ff4081;
+        animation: fall 3s linear forwards; z-index: 20;
     }
-    /* Sad Tear Animation */
-    .tear {
-        width: 6px; height: 6px; background: #81d4fa; border-radius: 50%;
-        position: absolute; top: 55px; left: 35px;
-        animation: cry 2s infinite; opacity: 0;
-    }
-    @keyframes cry {
-        0% { opacity: 0; transform: translateY(0); }
-        50% { opacity: 1; }
-        100% { opacity: 0; transform: translateY(30px); }
-    }
+    @keyframes fall { to { transform: translateY(100vh) rotate(720deg); } }
 
 </style>
 </head>
 <body>
 
-    <!-- RAIN BACKGROUND -->
-    <div class="rain" id="rain"></div>
+    <!-- PARTICLES -->
+    <div id="particle-container"></div>
 
     <div class="container">
 
         <!-- PAGE 1: THE REALIZATION -->
         <div class="page active" id="p1">
-            <h1>I am sorry...</h1>
+            <h1>I Was Wrong</h1>
             <p>
-                I know I messed up today. <br>
-                You asked for space, and instead of listening, I panicked and ran to you.
+                I looked back at my messages, and I realized my mistake immediately.
                 <br><br>
-                I didn't mean to annoy you. I was just scared of losing you. But I realize now that by holding on too tight, I am only pushing you further away.
+                I tried to show off my efforts to prove my worth. I tried to make you see "how much I do" for you.
+                <br><br>
+                That was immature, and I am so sorry.
             </p>
-            <button class="btn" onclick="nextPage(1)">Please Read Next</button>
+            <button class="btn" onclick="nextPage(1)">Please Read More</button>
         </div>
 
-        <!-- PAGE 2: THE APOLOGY -->
+        <!-- PAGE 2: THE TRANSACTION MISTAKE -->
         <div class="page" id="p2">
-            <h1>My Mistake</h1>
+            <h1>Love is Not a Transaction</h1>
             <p>
-                I saw that you were angry, and I still tried to force a conversation. That was selfish of me.
+                I made it seem like my gifts and my efforts came with strings attached. Like I was buying your time.
                 <br><br>
-                You deserve to have your boundaries respected. You deserve to have your time with your friends without me standing there looking sad.
+                <span class="highlight">That is not love. That is business.</span>
                 <br><br>
-                I am sorry for ruining your mood and your time.
+                And you are not a business deal to me. You are my heart. I am sorry for cheapening what we have by keeping a scorecard.
             </p>
-            <button class="btn" onclick="nextPage(2)">One Last Thing</button>
+            <button class="btn" onclick="nextPage(2)">Next</button>
         </div>
 
-        <!-- PAGE 3: THE PROMISE -->
+        <!-- PAGE 3: THE IRRITATION -->
         <div class="page" id="p3">
-            <h1>I Will Listen Now</h1>
+            <h1>I Know I Irritated You</h1>
             <p>
-                You said it is tiring to explain things. I get it now.
+                I know my words hurt you. I know I was loud when I should have been quiet. I know I was pushing when I should have been patient.
                 <br><br>
-                I am going to stop asking "Why". <br>
-                I am going to stop asking for time.
+                My fear of losing you made me act desperate, and instead of loving you properly, I just annoyed you.
                 <br><br>
-                I am stepping back. Not because I don't care, but because I care enough to give you what you asked for: <strong>Space.</strong>
+                I hate that I became a source of stress for you.
             </p>
-            <button class="btn" onclick="nextPage(3)">My Final Sorry</button>
+            <button class="btn" onclick="nextPage(3)">My Promise</button>
         </div>
 
-        <!-- PAGE 4: THE CUTE GOODBYE -->
+        <!-- PAGE 4: THE FORGIVENESS -->
         <div class="page" id="p4">
-            <!-- CSS BEAR -->
-            <div class="bear">
-                <div class="ear left"></div>
-                <div class="ear right"></div>
-                <div class="eye left"></div>
-                <div class="eye right"></div>
-                <div class="nose"></div>
-                <div class="tear"></div> <!-- Crying Tear -->
-            </div>
+            <!-- BEATING HEART -->
+            <div style="padding-left: 25px;"><div class="heart-shape"></div></div>
 
-            <h1>Forgive Me?</h1>
+            <h1>Can We Heal?</h1>
             <p>
-                I am going to be quiet now. <br>
-                I hope that when the anger fades, you can remember that my heart only ever wanted to make you happy.
+                I don't want to step back. I want to step UP and be the mature man you deserve.
                 <br><br>
-                I am genuinely, deeply sorry, Vanshi.
+                I am sorry, Vanshi. Truly.
+                <br>
+                No more showing off. Just pure love.
             </p>
-            <p style="font-size: 0.9rem; color: #999;">(I will wait for you to text me first.)</p>
+            <button class="btn" id="forgiveBtn" onclick="celebrate()">Forgive Me ❤️</button>
         </div>
 
     </div>
 
 <script>
-    /* --- PAGE NAVIGATION --- */
+    /* --- NAVIGATION --- */
     function nextPage(num) {
         document.getElementById('p' + num).classList.remove('active');
         document.getElementById('p' + (num + 1)).classList.add('active');
     }
 
-    /* --- RAIN EFFECT --- */
-    const rainContainer = document.getElementById('rain');
-    for(let i=0; i<50; i++){
-        let drop = document.createElement('div');
-        drop.classList.add('drop');
-        drop.style.left = Math.random() * 100 + '%';
-        drop.style.animationDuration = Math.random() * 1 + 0.5 + 's';
-        drop.style.animationDelay = Math.random() * 2 + 's';
-        rainContainer.appendChild(drop);
+    /* --- BACKGROUND PARTICLES --- */
+    const container = document.getElementById('particle-container');
+    for(let i=0; i<30; i++){
+        let p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.width = (Math.random() * 20 + 10) + 'px';
+        p.style.height = p.style.width;
+        p.style.animationDuration = (Math.random() * 5 + 5) + 's';
+        p.style.animationDelay = (Math.random() * 5) + 's';
+        container.appendChild(p);
+    }
+
+    /* --- CELEBRATION --- */
+    function celebrate() {
+        const btn = document.getElementById('forgiveBtn');
+        btn.innerText = "I Love You! 🌸";
+        btn.style.background = "#4CAF50";
+        
+        // Shower Confetti
+        for(let i=0; i<60; i++){
+            setTimeout(() => {
+                let c = document.createElement('div');
+                c.className = 'confetti';
+                c.style.left = Math.random() * 100 + 'vw';
+                c.style.backgroundColor = ['#ff4081', '#ff80ab', '#ea80fc', '#ffd740'][Math.floor(Math.random()*4)];
+                c.style.top = '-10px';
+                document.body.appendChild(c);
+            }, i * 50);
+        }
     }
 </script>
 

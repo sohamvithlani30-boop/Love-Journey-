@@ -3,171 +3,182 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For My Vanshi</title>
+<title>My Heart's Apology</title>
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
 <style>
-    /* SOFT HEALING THEME */
+    /* BEAUTIFUL PASTEL PURPLE THEME */
     :root {
-        --bg-color: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-        --accent: #ff8a80; /* Soft Red */
-        --text: #5d4037;
+        --bg-gradient: radial-gradient(circle at center, #f3e5f5 0%, #e1bee7 100%);
+        --card-bg: rgba(255, 255, 255, 0.9);
+        --text: #4a148c;
+        --accent: #9c27b0;
+        --btn-color: #8e24aa;
     }
 
     body, html {
         margin: 0; padding: 0; width: 100%; height: 100%;
         font-family: 'Nunito', sans-serif;
-        background: radial-gradient(circle at center, #fff0f0, #ffebee);
+        background: var(--bg-gradient);
         overflow: hidden;
         display: flex; align-items: center; justify-content: center;
     }
 
-    /* BACKGROUND PARTICLES */
-    .particle {
+    /* --- FLOATING MAGIC ORBS --- */
+    .orb {
         position: absolute; border-radius: 50%;
-        background: rgba(255, 138, 128, 0.3);
-        animation: floatUp linear infinite;
-        bottom: -50px; z-index: 0;
+        background: linear-gradient(45deg, #d1c4e9, #fff);
+        box-shadow: 0 0 20px rgba(255,255,255,0.6);
+        animation: float 8s infinite ease-in-out;
+        z-index: 0; opacity: 0.6;
     }
-    @keyframes floatUp {
-        0% { transform: translateY(0) scale(0.5); opacity: 0; }
-        50% { opacity: 0.8; }
-        100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
+    @keyframes float {
+        0%, 100% { transform: translateY(0) scale(1); }
+        50% { transform: translateY(-30px) scale(1.1); }
     }
 
-    /* CARD CONTAINER */
-    .container {
+    /* --- CONTAINER --- */
+    .book-container {
         position: relative; z-index: 10;
-        width: 85%; max-width: 450px; height: 500px;
+        width: 85%; max-width: 500px;
+        height: 600px; perspective: 1000px;
     }
 
-    /* PAGES */
+    /* --- PAGES --- */
     .page {
         position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(255, 255, 255, 0.95);
+        background: var(--card-bg);
         backdrop-filter: blur(10px);
-        border-radius: 30px;
-        box-shadow: 0 20px 60px rgba(255, 138, 128, 0.15);
+        border-radius: 25px;
+        box-shadow: 0 20px 60px rgba(74, 20, 140, 0.15);
+        padding: 40px; box-sizing: border-box;
         display: flex; flex-direction: column; 
         align-items: center; justify-content: center;
-        padding: 40px; box-sizing: border-box;
         text-align: center;
-        transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.5s;
-        opacity: 0; transform: translateY(50px) scale(0.95); pointer-events: none;
+        transition: transform 0.8s cubic-bezier(0.6, 0.05, 0.2, 1), opacity 0.5s;
+        opacity: 0; transform: rotateY(-20deg) translateX(100px); pointer-events: none;
     }
-    .page.active { opacity: 1; transform: translateY(0) scale(1); pointer-events: all; }
+    .page.active { opacity: 1; transform: rotateY(0) translateX(0); pointer-events: all; }
+    .page.prev { opacity: 0; transform: rotateY(20deg) translateX(-100px); }
 
     /* TEXT STYLES */
     h1 {
         font-family: 'Dancing Script', cursive; font-size: 2.8rem;
-        color: var(--accent); margin-bottom: 20px;
-        line-height: 1.2;
+        color: var(--accent); margin-bottom: 20px; line-height: 1.2;
     }
 
-    p { font-size: 1.1rem; line-height: 1.7; color: var(--text); margin-bottom: 30px; }
+    p {
+        font-size: 1.15rem; line-height: 1.7; color: var(--text);
+        margin-bottom: 30px; font-weight: 600;
+    }
 
-    .highlight { color: #d32f2f; font-weight: bold; }
+    .highlight { color: #d81b60; font-weight: bold; }
 
     /* BUTTONS */
     .btn {
         padding: 15px 40px; border-radius: 50px; border: none;
-        background: var(--accent); color: white;
+        background: var(--btn-color); color: white;
         font-family: 'Nunito', sans-serif; font-weight: bold; font-size: 1.1rem;
-        cursor: pointer; box-shadow: 0 10px 20px rgba(255, 138, 128, 0.3);
+        cursor: pointer; box-shadow: 0 10px 20px rgba(142, 36, 170, 0.3);
         transition: transform 0.2s, box-shadow 0.2s;
     }
-    .btn:active { transform: scale(0.95); box-shadow: 0 5px 10px rgba(255, 138, 128, 0.2); }
+    .btn:active { transform: scale(0.95); box-shadow: 0 5px 10px rgba(142, 36, 170, 0.2); }
 
-    /* FINAL HEART ANIMATION */
-    .heart-shape {
-        width: 100px; height: 90px;
-        background: #ff5252; position: relative;
-        transform: rotate(-45deg); margin-bottom: 30px;
-        animation: heartbeat 1.5s infinite;
-        box-shadow: -10px 10px 40px rgba(255, 82, 82, 0.4);
+    /* --- FINAL HEART EXPLOSION --- */
+    .heart-bg {
+        position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+        pointer-events: none; opacity: 0; transition: opacity 1s;
     }
-    .heart-shape:before, .heart-shape:after {
-        content: ""; width: 100px; height: 100px;
-        background: #ff5252; border-radius: 50%;
-        position: absolute;
+    .heart-particle {
+        position: absolute; font-size: 20px;
+        animation: burst 1.5s ease-out forwards;
     }
-    .heart-shape:before { top: -50px; left: 0; }
-    .heart-shape:after { top: 0; left: 50px; }
-
-    @keyframes heartbeat {
-        0% { transform: scale(1) rotate(-45deg); }
-        50% { transform: scale(1.1) rotate(-45deg); }
-        100% { transform: scale(1) rotate(-45deg); }
+    @keyframes burst {
+        0% { transform: translate(0,0) scale(1); opacity: 1; }
+        100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
     }
 
-    /* CONFETTI */
-    .confetti {
-        position: absolute; width: 10px; height: 10px; background: #ff4081;
-        animation: fall 3s linear forwards; z-index: 20;
+    .big-heart {
+        font-size: 80px; animation: pulse 1.5s infinite; margin-bottom: 20px;
     }
-    @keyframes fall { to { transform: translateY(100vh) rotate(720deg); } }
+    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
 </style>
 </head>
 <body>
 
-    <!-- PARTICLES -->
-    <div id="particle-container"></div>
+    <!-- BACKGROUND MAGIC -->
+    <div id="orbs"></div>
 
-    <div class="container">
+    <div class="book-container">
 
-        <!-- PAGE 1: THE REALIZATION -->
+        <!-- PAGE 1: THE MISTAKE (Transactional Love) -->
         <div class="page active" id="p1">
             <h1>I Was Wrong</h1>
             <p>
-                I looked back at my messages, and I realized my mistake immediately.
+                Vanshi, looking back at that screenshot I sent, I feel ashamed.
                 <br><br>
-                I tried to show off my efforts to prove my worth. I tried to make you see "how much I do" for you.
+                I made it sound like my gifts came with a price tag. Like I was trying to <strong>buy</strong> your attention.
                 <br><br>
-                That was immature, and I am so sorry.
+                <span class="highlight">That is not love. That is business.</span> And you are not a business deal to me. You are my heart.
             </p>
-            <button class="btn" onclick="nextPage(1)">Please Read More</button>
+            <button class="btn" onclick="nextPage(1)">But Why Did I Do It?</button>
         </div>
 
-        <!-- PAGE 2: THE TRANSACTION MISTAKE -->
+        <!-- PAGE 2: THE FRUSTRATION (New Year) -->
         <div class="page" id="p2">
-            <h1>Love is Not a Transaction</h1>
+            <h1>The Reason (Not an Excuse)</h1>
             <p>
-                I made it seem like my gifts and my efforts came with strings attached. Like I was buying your time.
+                I lashed out because I was hurting.
                 <br><br>
-                <span class="highlight">That is not love. That is business.</span>
+                I spent days building a special New Year website, hoping to see your smile. When you didn't see it, I felt invisible. I felt like my efforts didn't matter to you.
                 <br><br>
-                And you are not a business deal to me. You are my heart. I am sorry for cheapening what we have by keeping a scorecard.
+                That pain turned into frustration, and I sent that text to get a reaction. It was immature, but it came from a place of hurt, not malice.
             </p>
-            <button class="btn" onclick="nextPage(2)">Next</button>
+            <button class="btn" onclick="nextPage(2)">Next Page</button>
         </div>
 
-        <!-- PAGE 3: THE IRRITATION -->
+        <!-- PAGE 3: THE FEAR (Overthinking) -->
         <div class="page" id="p3">
-            <h1>I Know I Irritated You</h1>
+            <h1>My Fear</h1>
             <p>
-                I know my words hurt you. I know I was loud when I should have been quiet. I know I was pushing when I should have been patient.
+                I feel you pushing me away, and it terrifies me.
                 <br><br>
-                My fear of losing you made me act desperate, and instead of loving you properly, I just annoyed you.
+                I overthink every silence. My mind tells me I am losing you, and I panic. That screenshot was a desperate attempt to show you "Look, I care!" because I felt you slipping through my fingers.
                 <br><br>
-                I hate that I became a source of stress for you.
+                I am sorry for letting my insecurity ruin your mood.
             </p>
-            <button class="btn" onclick="nextPage(3)">My Promise</button>
+            <button class="btn" onclick="nextPage(3)">About The Gifts</button>
         </div>
 
-        <!-- PAGE 4: THE FORGIVENESS -->
+        <!-- PAGE 4: THE GIFTS -->
         <div class="page" id="p4">
-            <!-- BEATING HEART -->
-            <div style="padding-left: 25px;"><div class="heart-shape"></div></div>
-
-            <h1>Can We Heal?</h1>
+            <h1>No Strings Attached</h1>
             <p>
-                I don't want to step back. I want to step UP and be the mature man you deserve.
+                You said you don't want the gifts. I understand. I tainted them with guilt.
                 <br><br>
-                I am sorry, Vanshi. Truly.
+                But please know: You owe me nothing.
                 <br>
-                No more showing off. Just pure love.
+                I don't want to buy your time. I want to earn your respect.
+                <br><br>
+                I am cancelling the expectations. I just want to love you properly.
             </p>
-            <button class="btn" id="forgiveBtn" onclick="celebrate()">Forgive Me ❤️</button>
+            <button class="btn" onclick="nextPage(4)">Can We Heal?</button>
+        </div>
+
+        <!-- PAGE 5: THE FINAL LOVE -->
+        <div class="page" id="p5">
+            <div class="big-heart">💜</div>
+            <div class="heart-bg" id="heartExplosion"></div>
+
+            <h1>I Am Sorry</h1>
+            <p>
+                I promise to stop the drama. <br>
+                I promise to stop the pressure. <br>
+                I just want to be the reason you smile, never the reason you stress.
+                <br><br>
+                Forgive me?
+            </p>
+            <button class="btn" id="finalBtn" onclick="explodeHearts()">I Forgive You ❤️</button>
         </div>
 
     </div>
@@ -176,41 +187,55 @@
     /* --- NAVIGATION --- */
     function nextPage(num) {
         document.getElementById('p' + num).classList.remove('active');
-        document.getElementById('p' + (num + 1)).classList.add('active');
-    }
-
-    /* --- BACKGROUND PARTICLES --- */
-    const container = document.getElementById('particle-container');
-    for(let i=0; i<30; i++){
-        let p = document.createElement('div');
-        p.className = 'particle';
-        p.style.left = Math.random() * 100 + 'vw';
-        p.style.width = (Math.random() * 20 + 10) + 'px';
-        p.style.height = p.style.width;
-        p.style.animationDuration = (Math.random() * 5 + 5) + 's';
-        p.style.animationDelay = (Math.random() * 5) + 's';
-        container.appendChild(p);
-    }
-
-    /* --- CELEBRATION --- */
-    function celebrate() {
-        const btn = document.getElementById('forgiveBtn');
-        btn.innerText = "I Love You! 🌸";
-        btn.style.background = "#4CAF50";
+        document.getElementById('p' + num).classList.add('prev');
         
-        // Shower Confetti
-        for(let i=0; i<60; i++){
-            setTimeout(() => {
-                let c = document.createElement('div');
-                c.className = 'confetti';
-                c.style.left = Math.random() * 100 + 'vw';
-                c.style.backgroundColor = ['#ff4081', '#ff80ab', '#ea80fc', '#ffd740'][Math.floor(Math.random()*4)];
-                c.style.top = '-10px';
-                document.body.appendChild(c);
-            }, i * 50);
+        const next = document.getElementById('p' + (num + 1));
+        next.classList.add('active');
+    }
+
+    /* --- BACKGROUND ORBS --- */
+    const orbContainer = document.getElementById('orbs');
+    for(let i=0; i<15; i++){
+        let o = document.createElement('div');
+        o.className = 'orb';
+        let size = Math.random() * 80 + 20;
+        o.style.width = size + 'px'; o.style.height = size + 'px';
+        o.style.left = Math.random() * 100 + 'vw';
+        o.style.top = Math.random() * 100 + 'vh';
+        o.style.animationDuration = (Math.random() * 5 + 5) + 's';
+        orbContainer.appendChild(o);
+    }
+
+    /* --- HEART EXPLOSION --- */
+    function explodeHearts() {
+        const btn = document.getElementById('finalBtn');
+        btn.innerText = "I Love You Vanshi 💜";
+        btn.style.background = "#d81b60";
+        
+        const container = document.getElementById('heartExplosion');
+        container.style.opacity = '1';
+
+        for(let i=0; i<50; i++){
+            let heart = document.createElement('div');
+            heart.innerText = ['💜', '💖', '🌸', '✨'][Math.floor(Math.random()*4)];
+            heart.className = 'heart-particle';
+            
+            // Random Direction
+            let angle = Math.random() * 360;
+            let dist = Math.random() * 300 + 50;
+            let tx = Math.cos(angle * Math.PI / 180) * dist;
+            let ty = Math.sin(angle * Math.PI / 180) * dist;
+            
+            heart.style.setProperty('--tx', tx + 'px');
+            heart.style.setProperty('--ty', ty + 'px');
+            
+            // Center it
+            heart.style.left = '50%'; heart.style.top = '50%';
+            
+            container.appendChild(heart);
         }
     }
 </script>
 
 </body>
-</html>
+    </html>
